@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+	<insert id="insertStudent" parameterType="student">
+		insert into student(no,
+		name, tel) values(seq_student_no.nextval, #{name},
+		#{tel})
+	</insert>
+	<insert id="insertStudentMap" parameterType="map">
+		insert into
+		student(no, name, tel) values(seq_student_no.nextval, #{name},
+		#{tel})
+	</insert>
+	<!-- select태그의 resultType/resultMap은 필수속성이다. 둘중하나 반드시 작성 -->
+	<select id="selectStudentCount" resultType="_int">
+		select count(*) from student
+	</select>
+
+	<!-- resultset을 mybatis가 자동으로 vo 매핑 1. 동일한 이름의 setter를 통해 값대입 2. 자동형변환 처리 
+		varchar2, char -> String number -> int/double date -> java.util.date 컬럼명과 
+		필드명이 다른 경우 1. query alias지정 - 대소문자 구분위해 ""필수 2. resultMap - db컬럼과 vo필드(property)를 
+		연결 -->
+
+	<!-- 일반 방식 <select id="selectOneStudent" resultType="student" > select * 
+		from student where no = #{no} </select> -->
+
+
+	<!-- db컬럼과 vo필드(property)를 연결. 1. 이름 불일치 해결 2. 형병환처리를 임의로 지정 - column과 property가 
+		동일하다면, 해당 자식 태그는 생략가능 - resultMap은 재사용이 가능하다. 3. mybatis-config.xml의 setting태그 
+		mapUnderscoreToCamelCase true 설정 -->
+	<!-- 1. alias 일반 방식 <select id="selectOneStudent" resultType="student" > 
+		select no, name, tel, reg_date "regDate" from student where no = #{no} </select> -->
+
+	<!-- 2. resultMap 방식 -->
+	<!-- <select id="selectOneStudent" resultMap="studentMap"> select * from 
+		student where no = #{no} </select> -->
+	<!-- <resultMap type="student" id="studentVoMap"> -->
+	<!-- pk컬럼명 -->
+	<!-- <id column="no" property="no"/> -->
+	<!-- 나머지 컬럼명 -->
+	<!-- 같은 경우는 생략가능하다 -->
+	<!--<result column="name" property="name"/> 
+		<result column="tel" property="tel"/> -->
+	<!-- column는 db컬럼명, property는 vo명 -->
+	<!--<result column="reg_date" property="reg_date"/> 
+		</resultMap> -->
+
+	<!-- 3. config 일반 방식 -->
+	<select id="selectOneStudent" resultType="student">
+		select * from student where no = #{no}
+	</select>
+	<!-- 비동기 1 <select id="selectOneStudentMap" resultType="hashmap"> select 
+		* from student where no = #{no} -->
+	<!-- select no "no" from student where no = #{no} -->
+	<!-- </select> -->
+
+<select id="selectOneStudentMap" resultMap="studentMap"> select 
+		* from student where no = #{no} 
+	 </select> 
+	<resultMap type="map" id="studentMap">
+		<id column="no" property="no" />
+		<result column="name" property="name"/>
+		<result column="tel" property="tel"/>
+		<result column="reg_date" property="reg_date"/>
+	</resultMap>
+	
+<update id="updateStudentMap" parameterType="map">
+	update student set name = #{name}, tel = #{tel} where no = ${no}
+</update>
+<delete id="deleteStudentMap" parameterType="map">
+	delete from student where no = #{no} 
+</delete>
+</mapper>
