@@ -36,6 +36,12 @@ table.tbl-student tr:last-of-type td:first-child {
 	text-align: center;
 }
 </style>
+<script>
+<c:if test="${not empty msg}">
+alert("${msg}");
+</c:if>
+<c:remove var="msg" scope="session" />
+</script>
 </head>
 <body>
 	<div id="student-container">
