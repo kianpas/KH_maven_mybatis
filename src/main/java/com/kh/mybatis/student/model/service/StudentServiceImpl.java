@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import static com.kh.mybatis.common.MybatisUtils.*;
 
+import java.util.List;
 import java.util.Map;
 
 import com.kh.mybatis.student.model.dao.StudentDao;
@@ -89,6 +90,7 @@ public class StudentServiceImpl implements StudentService {
 			session.commit();
 		} catch (Exception e) {
 			session.rollback();
+			throw e;
 		} finally {
 			session.close();
 		}
@@ -106,10 +108,29 @@ public class StudentServiceImpl implements StudentService {
 			session.commit();
 		} catch (Exception e) {
 			session.rollback();
+			throw e;
 		} finally {
 			session.close();
 		}
 		return result;
 	}
 
+	@Override
+	public List<Student> selectStudentList() {
+		SqlSession session = getSqslSession();
+		List<Student> list = studentDao.selectStudentList(session);
+				
+		session.close();
+		return list;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectStudentMapList() {
+		SqlSession session = getSqslSession();
+		List<Map<String, Object>> mapList = studentDao.selectStudentMapList(session);
+				
+		session.close();
+		return mapList;
+	}
+	
 }

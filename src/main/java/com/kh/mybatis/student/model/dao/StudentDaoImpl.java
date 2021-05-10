@@ -1,5 +1,6 @@
 package com.kh.mybatis.student.model.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -53,6 +54,20 @@ public class StudentDaoImpl implements StudentDao {
 	public int deleteStudentMap(SqlSession session, Map<String, Object> student) {
 		// TODO Auto-generated method stub
 		return session.delete("student.deleteStudentMap", student);
+	}
+	/**
+	 * 조회된 행이 없는 경우, 빈 ArrayList객체가 리턴된다.
+	 */
+	@Override
+	public List<Student> selectStudentList(SqlSession session) {
+		
+		return session.selectList("student.selectStudentList");
+	}
+
+	@Override
+	public List<Map<String, Object>> selectStudentMapList(SqlSession session) {
+		
+		return session.selectList("student.selectStudentMapList");
 	}
 		
 	

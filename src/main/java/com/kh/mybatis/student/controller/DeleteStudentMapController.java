@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.mybatis.common.AbstractController;
+import com.kh.mybatis.common.exception.NoMatchingStudentException;
 import com.kh.mybatis.student.model.service.StudentService;
 import com.kh.mybatis.student.model.service.StudentServiceImpl;
 
@@ -31,7 +32,10 @@ public class DeleteStudentMapController extends AbstractController {
 			student.put("no", no);
 
 			int result = studentService.deleteStudentMap(student);
-			
+			if (result == 0) {
+				throw new NoMatchingStudentException(String.valueOf(no));
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

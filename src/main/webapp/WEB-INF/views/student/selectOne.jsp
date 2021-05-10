@@ -112,12 +112,14 @@ alert("${msg}");
 		</form>
 		<script>
 		deleteStudent = () =>{
-			var $frm = $("#deleteFrm");
-			console.log($frm);
-			console.log("${student.no}");
-			$frm.find("[name=no]").val("${student.no}");
-			$frm.submit();
-		}
+			if(confirm("정말 삭제하시겠습니까")){
+				var $frm = $("#deleteFrm");
+				console.log($frm);
+				console.log("${student.no}");
+				$frm.find("[name=no]").val("${student.no}");
+				$frm.submit();
+			}
+		};
 
 		
 		$(document.ajaxStudentSearchFrm).submit((e)=>{
